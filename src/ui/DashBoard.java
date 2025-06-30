@@ -2,21 +2,30 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import services.UserService;
 import ui.config.Config;
 import ui.components.List;
 import ui.components.Panel;
 import ui.components.SimpleTablePanel;
+import bussines.UserManagement;
 
 public class DashBoard extends JFrame {
     private String title;
     private Dimension dimension;
     private Panel westPanel, centerPanel;
+    private LoginWindow loginWindow;
+    private UserService userService;
 
-    public DashBoard(String title) {
+    public DashBoard(String title, LoginWindow loginWindow, UserService userService) {
         super(title);
+        this.loginWindow = loginWindow;
+        this.userService = userService;
         this.title = title;
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
@@ -36,6 +45,8 @@ public class DashBoard extends JFrame {
         createContainer();
         createList();
         createTable();
+        createBackButton();
+        createActionsPanel();
     }
 
     private void createContainer() {
@@ -74,4 +85,36 @@ public class DashBoard extends JFrame {
         tablePanel.setVisible(true);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
     }
+
+    private void createBackButton() {
+        JButton backButton = new JButton("Cerrar sesión");
+        backButton.setPreferredSize(new Dimension(150, 30));
+        backButton.addActionListener((event) -> {
+            this.dispose(); // Cierra el DashBoard
+            loginWindow.setVisible(true); // Vuelve a mostrar la ventana de login
+        });
+        westPanel.add(backButton, BorderLayout.SOUTH);
+    }
+    
+    private void createActionsPanel() {
+        JButton userMgmtButton = new JButton("Gestión de usuarios");
+        userMgmtButton.setPreferredSize(new Dimension(180, 30));
+        userMgmtButton.addActionListener(e-> {
+            new UserManagement(userService);
+        });
+
+        JButton logoutButton = new JButton("Cerrar sesión");
+        logoutButton.setPreferredSize(new Dimension(180, 30));
+        logoutButton.addActionListener(e -> {
+            this.dispose();
+            loginWindow.setVisible(true);
+        });
+
+        JPanel buttonsPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        buttonsPanel.add(userMgmtButton);
+        buttonsPanel.add(logoutButton);
+        westPanel.add(buttonsPanel, BorderLayout.SOUTH);
+    }
+
 }
+
