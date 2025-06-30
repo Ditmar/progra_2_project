@@ -72,7 +72,7 @@ public class LoginWindow extends JFrame {
     }
 
     private void setLabels() {
-        Label label = new Label("Curso de Programacion 2 ");
+        Label label = new Label("Curso de Programacion ");
         label.setSize(new Dimension(500, 30));
         label.relativeTo(leftPanel);
         label.setFont(Typography.MontSerratBoldDisplay1);

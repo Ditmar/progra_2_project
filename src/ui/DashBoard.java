@@ -3,17 +3,21 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
+import ui.UserManagementWindow;
 import ui.config.Config;
-import ui.components.List;
-import ui.components.Panel;
 import ui.components.SimpleTablePanel;
 
 public class DashBoard extends JFrame {
     private String title;
     private Dimension dimension;
-    private Panel westPanel, centerPanel;
+    private JPanel westPanel, centerPanel;
 
     public DashBoard(String title) {
         super(title);
@@ -21,7 +25,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -34,33 +37,49 @@ public class DashBoard extends JFrame {
 
     private void initUi() {
         createContainer();
+        createUserManagementButton();
         createList();
         createTable();
     }
 
     private void createContainer() {
-        this.westPanel = new Panel();
-        this.westPanel.setLayout(new BorderLayout());
-        this.westPanel.setSize(200, 300);
+        westPanel = new JPanel();
+        westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
+        westPanel.setPreferredSize(new Dimension(200, 0));
 
-        this.centerPanel = new Panel();
-        this.centerPanel.setLayout(new BorderLayout());
-        this.centerPanel.setSize(300, 500);
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
+
         add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
     }
 
+    private void createUserManagementButton() {
+        JButton userMgmtBtn = new JButton("Gestión de usuarios");
+        userMgmtBtn.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        westPanel.add(userMgmtBtn);
+        userMgmtBtn.addActionListener(e -> {
+            UserManagementWindow userWindow = new UserManagementWindow();
+            userWindow.setVisible(true);
+        });
+
+        westPanel.revalidate();
+        westPanel.repaint();
+    }
+
     private void createList() {
-        List<String> list = new List<String>();
-        list.addItem("Maria");
-        list.addItem("Juan");
-        list.addItem("Lucas");
-        list.addItem("John");
-        westPanel.add(list, BorderLayout.CENTER);
+        String[] users = { "Maria", "Juan", "Lucas", "John" };
+        JList<String> list = new JList<>(users);
+        JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setAlignmentX(JScrollPane.CENTER_ALIGNMENT);
+        scrollPane.setMaximumSize(new Dimension(200, 150));
+        westPanel.add(scrollPane);
+
+        westPanel.revalidate();
+        westPanel.repaint();
     }
 
     private void createTable() {
-        // fake data
         String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
                 { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
@@ -70,8 +89,10 @@ public class DashBoard extends JFrame {
                 { "5", "8.0", "8.5", "9.0", "8.5", "9.0" }
         };
         SimpleTablePanel tablePanel = new SimpleTablePanel(columns, data);
-        tablePanel.setSize(600, 300);
-        tablePanel.setVisible(true);
+        tablePanel.setPreferredSize(new Dimension(600, 300));
         centerPanel.add(tablePanel, BorderLayout.CENTER);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
     }
 }
