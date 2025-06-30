@@ -10,6 +10,10 @@ import ui.components.List;
 import ui.components.Panel;
 import ui.components.SimpleTablePanel;
 
+import bussines.UserManagement;
+import ui.components.Button;
+import java.awt.FlowLayout;
+
 public class DashBoard extends JFrame {
     private String title;
     private Dimension dimension;
@@ -50,14 +54,22 @@ public class DashBoard extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    private void createList() {
-        List<String> list = new List<String>();
-        list.addItem("Maria");
-        list.addItem("Juan");
-        list.addItem("Lucas");
-        list.addItem("John");
-        westPanel.add(list, BorderLayout.CENTER);
-    }
+ private void createList() {
+  Button btnUserMgmt = new Button("Gestión de usuarios");
+  btnUserMgmt.addActionListener(e -> new UserManagement());  
+
+  Panel header = new Panel();
+  header.setLayout(new FlowLayout(FlowLayout.LEFT));
+  header.add(btnUserMgmt);
+
+  List<String> list = new List<String>();
+  list.addItem("Maria");
+  list.addItem("Juan");
+  list.addItem("Lucas");
+  list.addItem("John");
+  westPanel.add(header, BorderLayout.NORTH);
+  westPanel.add(list, BorderLayout.CENTER);
+ }
 
     private void createTable() {
         // fake data
