@@ -74,4 +74,5 @@ public class DashBoard extends JFrame {
         tablePanel.setVisible(true);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
     }
+    //agregar sus cambios
 }
