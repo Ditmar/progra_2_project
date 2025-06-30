@@ -78,7 +78,7 @@ public class LoginWindow extends JFrame {
         label.setFont(Typography.MontSerratBoldDisplay1);
         label.setPosition("center");
 
-        Label registerLabel = new Label("Registro de usuarios ");
+        Label registerLabel = new Label("Registro de usuarios :) ");
         registerLabel.setSize(new Dimension(200, 20));
 
         double centerLocation2 = 0.5 * ((double) rightPanel.getWidth() - (double) registerLabel.getWidth());
@@ -105,8 +105,10 @@ public class LoginWindow extends JFrame {
     private void setTextFields() {
         username = new TextField("Nombre de usuario");
         username.relativeTo(rightPanel);
+        username.setText("test@gmail.com");
         username.setPosition("center", 100);
         password = new PasswordField("Password");
+        password.setText("123");
         password.relativeTo(rightPanel);
         password.setPosition("center", 150);
         rightPanel.add(username);
@@ -121,6 +123,7 @@ public class LoginWindow extends JFrame {
         combo.addItem("Administrador");
         combo.addItem("Cajero");
         combo.addItem("Usuario");
+        
         rightPanel.add(combo);
     }
 
@@ -140,8 +143,10 @@ public class LoginWindow extends JFrame {
     private void setCheckBox() {
         CheckBox checkbox = new CheckBox("Hombre");
         checkbox.relativeTo(rightPanel);
+        checkbox.setSize(new Dimension(100, 20));
         checkbox.setPosition("center", 320);
         CheckBox checkboxNo = new CheckBox("Mujer");
+        checkboxNo.setSize(new Dimension(100, 20));
         checkboxNo.relativeTo(rightPanel);
         checkboxNo.setPosition("center", 370);
         rightPanel.add(checkboxNo);
