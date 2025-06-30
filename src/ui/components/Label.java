@@ -51,4 +51,7 @@ public class Label extends JLabel implements BaseComponent {
     public String getContent() {
         return this.content;
     }
+    
 }
+
+
