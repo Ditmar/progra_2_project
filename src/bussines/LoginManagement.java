@@ -1,9 +1,8 @@
 package bussines;
 
+import bussines.model.Credential;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
-import bussines.model.Credential;
 import services.LoginServices;
 import ui.DashBoard;
 import ui.LoginWindow;
@@ -15,7 +14,7 @@ public class LoginManagement {
     public LoginManagement() {
         initServices();
         SwingUtilities.invokeLater(() -> {
-            mainWindow = new LoginWindow("Hola Mundo");
+            mainWindow = new LoginWindow("ventana principal");
             mainWindow.setOnLoginCallBack((credential) -> {
                 validateFlowCredentials(credential);
             });

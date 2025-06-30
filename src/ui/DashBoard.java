@@ -2,10 +2,11 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
+import bussines.UserManagement;
 import ui.config.Config;
+import ui.components.Button;
 import ui.components.List;
 import ui.components.Panel;
 import ui.components.SimpleTablePanel;
@@ -21,7 +22,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -39,35 +39,40 @@ public class DashBoard extends JFrame {
     }
 
     private void createContainer() {
-        this.westPanel = new Panel();
-        this.westPanel.setLayout(new BorderLayout());
-        this.westPanel.setSize(200, 300);
+        westPanel = new Panel();
+        westPanel.setLayout(new BorderLayout());
+        westPanel.setPreferredSize(new Dimension(200, Config.HEIGHT));
 
-        this.centerPanel = new Panel();
-        this.centerPanel.setLayout(new BorderLayout());
-        this.centerPanel.setSize(300, 500);
+        centerPanel = new Panel();
+        centerPanel.setLayout(new BorderLayout());
+        centerPanel.setPreferredSize(new Dimension(Config.WIDTH - 200, Config.HEIGHT));
+
         add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
     }
 
     private void createList() {
-        List<String> list = new List<String>();
+        List<String> list = new List<>();
         list.addItem("Maria");
         list.addItem("Juan");
         list.addItem("Lucas");
         list.addItem("John");
         westPanel.add(list, BorderLayout.CENTER);
+
+        Button userMgmtBtn = new Button("Gestión de usuarios");
+        userMgmtBtn.setPreferredSize(new Dimension(180, 40));
+        userMgmtBtn.addActionListener(e -> new UserManagement());
+        westPanel.add(userMgmtBtn, BorderLayout.SOUTH);
     }
 
     private void createTable() {
-        // fake data
-        String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
+        String[] columns = { "ID", "Parcial 1", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
-                { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
-                { "2", "7.0", "6.5", "8.0", "7.5", "8.0" },
-                { "3", "9.0", "8.5", "9.5", "10.0", "9.0" },
-                { "4", "6.0", "7.0", "6.5", "7.5", "6.0" },
-                { "5", "8.0", "8.5", "9.0", "8.5", "9.0" }
+            { "1", "8.5", "9.0", "7.5", "8.0", "9.5", "8.7" },
+            { "2", "7.0", "6.5", "8.0", "7.5", "8.0", "7.4" },
+            { "3", "9.0", "8.5", "9.5", "10.0", "9.0", "9.2" },
+            { "4", "6.0", "7.0", "6.5", "7.5", "6.0", "6.6" },
+            { "5", "8.0", "8.5", "9.0", "8.5", "9.0", "8.6" }
         };
         SimpleTablePanel tablePanel = new SimpleTablePanel(columns, data);
         tablePanel.setSize(600, 300);
