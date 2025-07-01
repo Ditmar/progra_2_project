@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
 
 import ui.config.Config;
 import ui.components.List;
@@ -36,6 +37,7 @@ public class DashBoard extends JFrame {
         createContainer();
         createList();
         createTable();
+        createButton();
     }
 
     private void createContainer() {
@@ -58,6 +60,17 @@ public class DashBoard extends JFrame {
         list.addItem("John");
         westPanel.add(list, BorderLayout.CENTER);
     }
+
+     private void createButton() {
+    JButton miBoton = new JButton("GESTION DE USUARIOS");
+    miBoton.setPreferredSize(new Dimension(200, 40));
+
+    miBoton.addActionListener(e -> {
+     UserManagementWindow userManagementWindow = new UserManagementWindow();
+     userManagementWindow.setVisible(true);
+    });
+    westPanel.add(miBoton, BorderLayout.SOUTH);
+}
 
     private void createTable() {
         // fake data
