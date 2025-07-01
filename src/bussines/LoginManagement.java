@@ -26,7 +26,7 @@ public class LoginManagement {
         Boolean isValid = loginServices.isValidLogin(credential.getUserName(), credential.getPassword());
         if (isValid) {
             mainWindow.setVisible(false);
-            new DashBoard("DashBoard");
+            new DashBoard("Registro de Usuarios");
         } else {
             JOptionPane.showMessageDialog(mainWindow, "Las credenciasles no son correctas", "Login Error",
                     JOptionPane.ERROR_MESSAGE);

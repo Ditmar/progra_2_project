@@ -82,17 +82,12 @@ public class UserManagementWindow extends javax.swing.JFrame {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        if (username.isEmpty() || username.equals("Nombre de usuario") ||
-                password.isEmpty() || password.equals("Contraseña")) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, ingresa usuario y contraseña válidos.");
-            return;
-        }
-
         usersData.add(new String[] { username, "*****" });
 
         updateTable();
 
-        javax.swing.JOptionPane.showMessageDialog(this, "Usuario guardado correctamente.");
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Usuario guardado correctamente puede proseguir con su dia :).");
 
         clearForm();
     }

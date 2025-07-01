@@ -29,22 +29,6 @@ public class UserManagement {
                 String username = window.getUsernameField().getText().trim();
                 String password = window.getPasswordField().getText().trim();
 
-                if (username.isEmpty() || password.isEmpty() ||
-                        username.equals("Nombre de usuario") || password.equals("Contraseña")) {
-                    JOptionPane.showMessageDialog(window, "Completa todos los campos.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                boolean exists = userService.getAllUsers().stream()
-                        .anyMatch(c -> c.getUserName().equals(username) && c.getPassword().equals(password));
-
-                if (exists) {
-                    JOptionPane.showMessageDialog(window, "Este usuario ya existe.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
                 Credential newUser = new Credential(username, password);
                 userService.addUser(newUser);
                 JOptionPane.showMessageDialog(window, "Usuario guardado: " + username);
