@@ -2,7 +2,8 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
-import business.UserManagement;
+import bussines.UserManagement;
+import ui.config.*;;;
 
 public class DashBoard extends JFrame {
     private Panel westPanel, centerPanel;

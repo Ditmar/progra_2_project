@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import ui.components.*;
-import model.Credential;
+import bussines.model.Credential;
 
 public class UserManagementWindow extends JFrame {
     private JTextField usernameField;

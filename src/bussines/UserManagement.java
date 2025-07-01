@@ -1,8 +1,8 @@
-package business;
+package bussines;
 
 import services.UserService;
 import ui.UserManagementWindow;
-import model.Credential;
+import bussines.model.Credential;
 import java.util.List;
 
 public class UserManagement {

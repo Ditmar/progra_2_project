@@ -1,6 +1,6 @@
 package services;
 
-import model.Credential;
+import bussines.model.Credential;
 import java.util.ArrayList;
 import java.util.List;
 
