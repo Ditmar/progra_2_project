@@ -2,9 +2,11 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-
+import bussines.UserManagement; // Importamos nuestro controlador.
+import ui.components.Button; // Importamos el componente de botón.
 import ui.config.Config;
 import ui.components.List;
 import ui.components.Panel;
@@ -21,7 +23,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -36,16 +37,18 @@ public class DashBoard extends JFrame {
         createContainer();
         createList();
         createTable();
+        // Añadimos la llamada a nuestro nuevo método para crear el menú.
+        createMenu();
     }
 
     private void createContainer() {
         this.westPanel = new Panel();
         this.westPanel.setLayout(new BorderLayout());
-        this.westPanel.setSize(200, 300);
+        // Le damos un tamaño preferido para que no sea demasiado ancho.
+        this.westPanel.setPreferredSize(new Dimension(200, 0));
 
         this.centerPanel = new Panel();
         this.centerPanel.setLayout(new BorderLayout());
-        this.centerPanel.setSize(300, 500);
         add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
     }
@@ -56,6 +59,7 @@ public class DashBoard extends JFrame {
         list.addItem("Juan");
         list.addItem("Lucas");
         list.addItem("John");
+        // La lista se añade al centro del panel izquierdo.
         westPanel.add(list, BorderLayout.CENTER);
     }
 
@@ -73,5 +77,31 @@ public class DashBoard extends JFrame {
         tablePanel.setSize(600, 300);
         tablePanel.setVisible(true);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Este método se encarga de crear el botón de menú y añadirlo a la interfaz.
+     * ✅ Cumple con el Requisito 4 del examen.
+     */
+    private void createMenu() {
+        // 1. Creamos una instancia de nuestro botón personalizado.
+        Button botonGestionUsuarios = new Button("Gestión de Usuarios");
+
+        // 2. Le añadimos la acción que se ejecutará al hacer clic.
+        botonGestionUsuarios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // --- CÓDIGO CORREGIDO ---
+                // Ahora, la acción es mucho más simple.
+                // Solo necesitamos crear una nueva instancia del controlador.
+                // Su propio constructor se encargará de todo lo demás.
+                new UserManagement();
+                // --- FIN DE LA CORRECCIÓN ---
+            }
+        });
+
+        // 3. Añadimos el botón al panel izquierdo (westPanel) en la parte de abajo
+        // (SOUTH).
+        this.westPanel.add(botonGestionUsuarios, BorderLayout.SOUTH);
     }
 }
