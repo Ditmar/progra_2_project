@@ -36,15 +36,4 @@ public class SimpleTablePanel extends JPanel {
     public DefaultTableModel getModel() {
         return tableModel;
     }
-
-    public void setData(Object[][] data) {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.setRowCount(0);
-    for (Object[] row : data) {
-        model.addRow(row);
-    }
 }
-
-}
-    
-    
