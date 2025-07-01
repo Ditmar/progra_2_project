@@ -7,3 +7,4 @@ public class App {
         });
     }
 }
+// This class serves as the entry point for the application, initializing the dashboard window.
