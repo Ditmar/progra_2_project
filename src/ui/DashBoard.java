@@ -1,30 +1,38 @@
 package ui;
 
-import javax.swing.*;
-import java.awt.*;
-import bussines.UserManagement;
-import ui.config.*;;;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
+import ui.config.Config;
+import ui.components.List;
+import ui.components.Panel;
+import ui.components.SimpleTablePanel;
 
 public class DashBoard extends JFrame {
+    private String title;
+    private Dimension dimension;
     private Panel westPanel, centerPanel;
-    private JButton userManagementButton;
 
     public DashBoard(String title) {
         super(title);
-        this.setSize(new Dimension(Config.WIDTH, Config.HEIGHT));
+        this.title = title;
+        this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
-        this.initUI();
+        this.initUi();
+
     }
 
     private void initConfig() {
-        this.setSize(new Dimension(Config.WIDTH, Config.HEIGHT));
+        this.setSize(new Dimension(this.dimension));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
-    private void initUI() {
+    private void initUi() {
         createContainer();
         createList();
         createTable();
@@ -35,57 +43,35 @@ public class DashBoard extends JFrame {
         this.westPanel.setLayout(new BorderLayout());
         this.westPanel.setSize(200, 300);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-
-        userManagementButton = new JButton("Gestión de usuarios");
-        userManagementButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userManagementButton.addActionListener(e -> openUserManagement());
-
-        buttonPanel.add(Box.createVerticalStrut(20));
-        buttonPanel.add(userManagementButton);
-        buttonPanel.add(Box.createVerticalGlue());
-
-        this.westPanel.add(buttonPanel, BorderLayout.NORTH);
-
-        this.add(westPanel, BorderLayout.WEST);
-
         this.centerPanel = new Panel();
-        this.add(centerPanel, BorderLayout.CENTER);
-    }
-
-    private void openUserManagement() {
-        UserManagement userManagement = new UserManagement();
-        userManagement.showWindow();
+        this.centerPanel.setLayout(new BorderLayout());
+        this.centerPanel.setSize(300, 500);
+        add(westPanel, BorderLayout.WEST);
+        add(centerPanel, BorderLayout.CENTER);
     }
 
     private void createList() {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement("Inicio");
-        listModel.addElement("Reportes");
-        listModel.addElement("Configuración");
-
-        JList<String> list = new JList<>(listModel);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(180, 80));
-
-        westPanel.add(scrollPane, BorderLayout.CENTER);
+        List<String> list = new List<String>();
+        list.addItem("Maria");
+        list.addItem("Juan");
+        list.addItem("Lucas");
+        list.addItem("John");
+        westPanel.add(list, BorderLayout.CENTER);
     }
 
     private void createTable() {
-        String[] columnNames = {"ID", "Nombre", "Estado"};
+        // fake data
+        String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
-            {"1", "Usuario 1", "Activo"},
-            {"2", "Usuario 2", "Inactivo"},
-            {"3", "Usuario 3", "Activo"}
+                { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
+                { "2", "7.0", "6.5", "8.0", "7.5", "8.0" },
+                { "3", "9.0", "8.5", "9.5", "10.0", "9.0" },
+                { "4", "6.0", "7.0", "6.5", "7.5", "6.0" },
+                { "5", "8.0", "8.5", "9.0", "8.5", "9.0" }
         };
-
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        centerPanel.setLayout(new BorderLayout());
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        SimpleTablePanel tablePanel = new SimpleTablePanel(columns, data);
+        tablePanel.setSize(600, 300);
+        tablePanel.setVisible(true);
+        centerPanel.add(tablePanel, BorderLayout.CENTER);
     }
 }
