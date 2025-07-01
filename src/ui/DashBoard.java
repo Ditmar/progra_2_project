@@ -51,6 +51,7 @@ public class DashBoard extends JFrame {
         centerPanel.setLayout(new BorderLayout());
 
         add(westPanel, BorderLayout.WEST);
+
         add(centerPanel, BorderLayout.CENTER);
     }
 
