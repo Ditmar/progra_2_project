@@ -15,7 +15,7 @@ public class LoginManagement {
     public LoginManagement() {
         initServices();
         SwingUtilities.invokeLater(() -> {
-            mainWindow = new LoginWindow("Hola Mundo");
+            mainWindow = new LoginWindow("GUNAR");
             mainWindow.setOnLoginCallBack((credential) -> {
                 validateFlowCredentials(credential);
             });

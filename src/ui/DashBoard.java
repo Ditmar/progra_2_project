@@ -2,13 +2,13 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-
+import java.awt.FlowLayout;
 import javax.swing.JFrame;
-
-import ui.config.Config;
+import ui.components.Button;
 import ui.components.List;
 import ui.components.Panel;
 import ui.components.SimpleTablePanel;
+import ui.config.Config;
 
 public class DashBoard extends JFrame {
     private String title;
@@ -21,7 +21,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -34,6 +33,7 @@ public class DashBoard extends JFrame {
 
     private void initUi() {
         createContainer();
+        addUserManagementButton(); // Nueva función añadida
         createList();
         createTable();
     }
@@ -50,27 +50,43 @@ public class DashBoard extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
+    // NUEVO MÉTODO AÑADIDO PARA EL BOTÓN DE GESTIÓN
+    private void addUserManagementButton() {
+        // Crear contenedor para el botón
+        Panel buttonContainer = new Panel();
+        buttonContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+        
+        // Crear botón de gestión de usuarios
+        Button userManagementButton = new Button("Gestión de usuarios");
+        userManagementButton.setPreferredSize(new Dimension(160, 40));
+        userManagementButton.addActionListener(e -> {
+            // Abrir ventana de gestión al hacer clic
+            new bussines.UserManagement(); 
+        });
+        
+        buttonContainer.add(userManagementButton);
+        westPanel.add(buttonContainer, BorderLayout.NORTH);
+    }
+
     private void createList() {
         List<String> list = new List<String>();
-        list.addItem("Maria");
-        list.addItem("Juan");
-        list.addItem("Lucas");
-        list.addItem("John");
+        list.addItem("RENE");
+        list.addItem("LUIS");
+        list.addItem("RUBY");
+        list.addItem("MAYKOL");
         westPanel.add(list, BorderLayout.CENTER);
     }
 
     private void createTable() {
-        // fake data
-        String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
+        String[] columns = { "ID", "PARCIAL 1 ", "PARCIAL 2", "PARCIAL 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
-                { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
-                { "2", "7.0", "6.5", "8.0", "7.5", "8.0" },
-                { "3", "9.0", "8.5", "9.5", "10.0", "9.0" },
-                { "4", "6.0", "7.0", "6.5", "7.5", "6.0" },
-                { "5", "8.0", "8.5", "9.0", "8.5", "9.0" }
+            { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
+            { "2", "7.0", "6.5", "8.0", "7.5", "8.0" },
+            { "3", "9.0", "8.5", "9.5", "10.0", "9.0" },
+            { "4", "6.0", "7.0", "6.5", "7.5", "6.0" },
+            { "5", "8.0", "8.5", "9.0", "8.5", "9.0" }
         };
         SimpleTablePanel tablePanel = new SimpleTablePanel(columns, data);
-        tablePanel.setSize(600, 300);
         tablePanel.setVisible(true);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
     }
