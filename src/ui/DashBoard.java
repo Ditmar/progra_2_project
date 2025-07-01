@@ -3,12 +3,15 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import ui.config.Config;
 import ui.components.List;
 import ui.components.Panel;
 import ui.components.SimpleTablePanel;
+import ui.UserManagementWindow;
 
 public class DashBoard extends JFrame {
     private String title;
@@ -21,7 +24,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -34,20 +36,31 @@ public class DashBoard extends JFrame {
 
     private void initUi() {
         createContainer();
+        createUserManagementButton();
         createList();
         createTable();
     }
 
     private void createContainer() {
         this.westPanel = new Panel();
-        this.westPanel.setLayout(new BorderLayout());
+        this.westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS)); 
         this.westPanel.setSize(200, 300);
 
         this.centerPanel = new Panel();
         this.centerPanel.setLayout(new BorderLayout());
         this.centerPanel.setSize(300, 500);
+
         add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
+    }
+
+    private void createUserManagementButton() {
+        JButton btnUserManagement = new JButton("Gestión de usuarios");
+        btnUserManagement.addActionListener(e -> {
+            new UserManagementWindow().setVisible(true);
+        });
+
+        westPanel.add(btnUserManagement);
     }
 
     private void createList() {
@@ -56,11 +69,11 @@ public class DashBoard extends JFrame {
         list.addItem("Juan");
         list.addItem("Lucas");
         list.addItem("John");
-        westPanel.add(list, BorderLayout.CENTER);
+
+        westPanel.add(list);
     }
 
     private void createTable() {
-        // fake data
         String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
                 { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
