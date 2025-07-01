@@ -15,7 +15,7 @@ public class LoginManagement {
     public LoginManagement() {
         initServices();
         SwingUtilities.invokeLater(() -> {
-            mainWindow = new LoginWindow("Hola Mundo");
+            mainWindow = new LoginWindow("SegundoParcialSIS211");
             mainWindow.setOnLoginCallBack((credential) -> {
                 validateFlowCredentials(credential);
             });
@@ -26,7 +26,7 @@ public class LoginManagement {
         Boolean isValid = loginServices.isValidLogin(credential.getUserName(), credential.getPassword());
         if (isValid) {
             mainWindow.setVisible(false);
-            new DashBoard("DashBoard");
+            new DashBoard("Registro de Usuarios");
         } else {
             JOptionPane.showMessageDialog(mainWindow, "Las credenciasles no son correctas", "Login Error",
                     JOptionPane.ERROR_MESSAGE);
