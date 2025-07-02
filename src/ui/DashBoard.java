@@ -2,9 +2,13 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import bussines.UserManagement;
 import ui.config.Config;
 import ui.components.List;
 import ui.components.Panel;
@@ -21,7 +25,6 @@ public class DashBoard extends JFrame {
         this.dimension = new Dimension(Config.WIDTH, Config.HEIGHT);
         this.initConfig();
         this.initUi();
-
     }
 
     private void initConfig() {
@@ -36,6 +39,7 @@ public class DashBoard extends JFrame {
         createContainer();
         createList();
         createTable();
+        createUserManagementButton();
     }
 
     private void createContainer() {
@@ -46,6 +50,7 @@ public class DashBoard extends JFrame {
         this.centerPanel = new Panel();
         this.centerPanel.setLayout(new BorderLayout());
         this.centerPanel.setSize(300, 500);
+
         add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
     }
@@ -60,7 +65,6 @@ public class DashBoard extends JFrame {
     }
 
     private void createTable() {
-        // fake data
         String[] columns = { "ID", "Parcial 1 ", "Parcial 2", "Parcial 3", "Final", "Laboratorio", "Promedio final" };
         Object[][] data = {
                 { "1", "8.5", "9.0", "7.5", "8.0", "9.5" },
@@ -73,5 +77,21 @@ public class DashBoard extends JFrame {
         tablePanel.setSize(600, 300);
         tablePanel.setVisible(true);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
+    }
+
+    private void createUserManagementButton() {
+        JButton userButton = new JButton("Gestión de usuarios");
+        userButton.setPreferredSize(new Dimension(200, 40));
+        userButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new UserManagement();
+            }
+        });
+
+        Panel buttonPanel = new Panel();
+        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.add(userButton, BorderLayout.NORTH);
+        westPanel.add(buttonPanel, BorderLayout.NORTH);
     }
 }
