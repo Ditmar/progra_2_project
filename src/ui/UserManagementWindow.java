@@ -1,93 +1,109 @@
 package ui;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import ui.components.*;
+import java.util.List;
+
+import bussines.interfaces.HandleUserManagement;
 import bussines.model.Credential;
+import ui.components.*;
+import ui.components.Button;
+import ui.components.TextField;
 
 public class UserManagementWindow extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton saveButton;
-    private JButton clearButton;
     private SimpleTablePanel tablePanel;
-    private JPanel formPanel;
-    
+    private TextField usernameField;
+    private PasswordField passwordField;
+    private Button saveButton;
+    private Button clearButton;
+    private HandleUserManagement callback;
+
     public UserManagementWindow() {
+        super("Gestión de Usuarios");
+        configureWindow();
         initComponents();
         setupLayout();
+    }
+
+    private void configureWindow() {
+        setSize(700, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Gestión de Usuarios");
-        setSize(800, 600);
         setLocationRelativeTo(null);
     }
-    
+
     private void initComponents() {
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
-        saveButton = new JButton("Guardar Usuario");
-        clearButton = new JButton("Limpiar Formulario");
-        
-        String[] columnNames = {"Usuario", "Contraseña"};
-        Object[][] data = {};
-        tablePanel = new SimpleTablePanel(data, columnNames);
-        
-        clearButton.addActionListener(e -> clearForm());
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        setContentPane(mainPanel);
+
+        tablePanel = new SimpleTablePanel(new String[]{"Nombre de Usuario"}, new Object[0][1]);
+        tablePanel.setBorder(BorderFactory.createTitledBorder("Usuarios Registrados"));
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
+
+        JPanel formPanel = createFormPanel();
+        mainPanel.add(formPanel, BorderLayout.SOUTH);
     }
-    
-    private void setupLayout() {
-        setLayout(new BorderLayout());
-        
-        formPanel = createFormPanel();
-        add(formPanel, BorderLayout.NORTH);
-        
-        add(new JScrollPane(tablePanel), BorderLayout.CENTER);
-    }
-    
+
     private JPanel createFormPanel() {
-        JPanel panel = new Panel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createTitledBorder("Agregar Usuario"));
-        
-        JPanel fieldsPanel = new JPanel(new FlowLayout());
-        fieldsPanel.add(new JLabel("Usuario:"));
-        fieldsPanel.add(usernameField);
-        fieldsPanel.add(new JLabel("Contraseña:"));
-        fieldsPanel.add(passwordField);
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBorder(BorderFactory.createTitledBorder("Agregar Nuevo Usuario"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Campos de texto
+        usernameField = new TextField("Ingrese el nombre de usuario");
+        passwordField = new PasswordField("Ingrese la contraseña");
+
+        // Botones
+        saveButton = new Button("Guardar Usuario");
+        clearButton = new Button("Limpiar Formulario");
+
+        // Posicionamiento
+        addFormField(formPanel, gbc, new JLabel("Usuario:"), 0, 0);
+        addFormField(formPanel, gbc, usernameField, 1, 0);
+        addFormField(formPanel, gbc, new JLabel("Contraseña:"), 0, 1);
+        addFormField(formPanel, gbc, passwordField, 1, 1);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(saveButton);
         buttonPanel.add(clearButton);
-        
-        panel.add(fieldsPanel);
-        panel.add(buttonPanel);
-        
-        return panel;
+        addFormField(formPanel, gbc, buttonPanel, 1, 2);
+
+        return formPanel;
+    }
+
+    private void addFormField(JPanel panel, GridBagConstraints gbc, Component component, int x, int y) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.weightx = (x == 1) ? 1.0 : 0;
+        panel.add(component, gbc);
+    }
+
+    // Resto de métodos (sin cambios en funcionalidad)
+    public void setOnSaveCallback(HandleUserManagement callback) {
+        this.callback = callback;
     }
     
-    public void setSaveButtonListener(ActionListener listener) {
-        saveButton.addActionListener(listener);
-    }
-    
-    public String getUsername() {
-        return usernameField.getText().trim();
-    }
-    
-    public String getPassword() {
-        return new String(passwordField.getPassword());
-    }
-    
-    private void clearForm() {
+    public void clearForm() {
         usernameField.setText("");
         passwordField.setText("");
     }
     
-    public void updateTable(Object[][] data) {
-        tablePanel.updateData(data);
+    public void showMessage(String title, String message, int messageType) {
+        JOptionPane.showMessageDialog(this, message, title, messageType);
     }
     
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
+    public void updateTable(List<Credential> userList) {
+        DefaultTableModel model = tablePanel.getModel();
+        model.setRowCount(0);
+        for (Credential user : userList) {
+            model.addRow(new Object[]{user.getUserName()});
+        }
     }
 }

@@ -1,36 +1,36 @@
 package services;
 
 import bussines.model.Credential;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserService {
-    private List<Credential> users;
-    
+    private final List<Credential> userList;
+
     public UserService() {
-        this.users = new ArrayList<>();
-        users.add(new Credential("admin", "admin123"));
-        users.add(new Credential("user1", "password1"));
+        userList = new ArrayList<>();
+        initializeDefaultUsers();
     }
-    
-    public void addUser(Credential credential) {
-        if (credential != null && 
-            credential.getUsername() != null && 
-            !credential.getUsername().isEmpty()) {
-            users.add(credential);
-        }
+
+    private void initializeDefaultUsers() {
+        addUser(new Credential("admin", "admin123"));
+        addUser(new Credential("estudiante", "clave456"));
     }
-    
+
+    public void addUser(Credential user) {
+        Objects.requireNonNull(user, "El usuario no puede ser nulo");
+        userList.add(user);
+    }
+
     public List<Credential> getAllUsers() {
-        return new ArrayList<>(users);
+        return Collections.unmodifiableList(userList);
     }
-    
+
     public boolean userExists(String username) {
-        return users.stream()
-                   .anyMatch(user -> user.getUsername().equals(username));
-    }
-    
-    public int getUserCount() {
-        return users.size();
+        return Optional.ofNullable(username)
+            .filter(name -> !name.trim().isEmpty())
+            .map(name -> userList.stream()
+                .anyMatch(u -> u.getUserName().equalsIgnoreCase(name.trim())))
+            .orElse(false);
     }
 }
