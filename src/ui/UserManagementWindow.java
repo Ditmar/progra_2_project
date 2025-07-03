@@ -1,93 +1,80 @@
 package ui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import ui.components.*;
 import bussines.model.Credential;
+import services.UserService;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class UserManagementWindow extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton saveButton;
-    private JButton clearButton;
-    private SimpleTablePanel tablePanel;
-    private JPanel formPanel;
-    
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JButton saveButton;
+    private final JButton clearButton;
+    private final JTable userTable;
+    private final DefaultTableModel tableModel;
+
     public UserManagementWindow() {
-        initComponents();
-        setupLayout();
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Usuarios");
-        setSize(800, 600);
+        setSize(500, 400);
         setLocationRelativeTo(null);
-    }
-    
-    private void initComponents() {
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
-        saveButton = new JButton("Guardar Usuario");
-        clearButton = new JButton("Limpiar Formulario");
-        
-        String[] columnNames = {"Usuario", "Contraseña"};
-        Object[][] data = {};
-        tablePanel = new SimpleTablePanel(data, columnNames);
-        
-        clearButton.addActionListener(e -> clearForm());
-    }
-    
-    private void setupLayout() {
-        setLayout(new BorderLayout());
-        
-        formPanel = createFormPanel();
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout(10, 10));
+
+        // Panel formulario
+        JPanel formPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Nuevo Usuario"));
+
+        formPanel.add(new JLabel("Usuario:"));
+        usernameField = new JTextField();
+        formPanel.add(usernameField);
+
+        formPanel.add(new JLabel("Contraseña:"));
+        passwordField = new JPasswordField();
+        formPanel.add(passwordField);
+
+        saveButton = new JButton("Guardar usuario");
+        clearButton = new JButton("Limpiar formulario");
+        formPanel.add(saveButton);
+        formPanel.add(clearButton);
+
         add(formPanel, BorderLayout.NORTH);
-        
-        add(new JScrollPane(tablePanel), BorderLayout.CENTER);
+
+        // Tabla
+        tableModel = new DefaultTableModel(new String[] { "Usuario" }, 0);
+        userTable = new JTable(tableModel);
+        JScrollPane tableScroll = new JScrollPane(userTable);
+        tableScroll.setBorder(BorderFactory.createTitledBorder("Usuarios registrados"));
+        add(tableScroll, BorderLayout.CENTER);
     }
-    
-    private JPanel createFormPanel() {
-        JPanel panel = new Panel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createTitledBorder("Agregar Usuario"));
-        
-        JPanel fieldsPanel = new JPanel(new FlowLayout());
-        fieldsPanel.add(new JLabel("Usuario:"));
-        fieldsPanel.add(usernameField);
-        fieldsPanel.add(new JLabel("Contraseña:"));
-        fieldsPanel.add(passwordField);
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        buttonPanel.add(saveButton);
-        buttonPanel.add(clearButton);
-        
-        panel.add(fieldsPanel);
-        panel.add(buttonPanel);
-        
-        return panel;
-    }
-    
-    public void setSaveButtonListener(ActionListener listener) {
-        saveButton.addActionListener(listener);
-    }
-    
+
     public String getUsername() {
         return usernameField.getText().trim();
     }
-    
+
     public String getPassword() {
         return new String(passwordField.getPassword());
     }
-    
-    private void clearForm() {
+
+    public void clearForm() {
         usernameField.setText("");
         passwordField.setText("");
     }
-    
-    public void updateTable(Object[][] data) {
-        tablePanel.updateData(data);
+
+    public void updateUserTable(List<Credential> users) {
+        tableModel.setRowCount(0);
+        for (Credential c : users) {
+            tableModel.addRow(new Object[] { c.getUserName() });
+        }
     }
-    
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+
+    public JButton getClearButton() {
+        return clearButton;
     }
 }
